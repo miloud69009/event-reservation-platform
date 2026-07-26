@@ -1,0 +1,26 @@
+# Variables et secrets
+.env
+.env.*
+!.env.example
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Backend
+backend/target/
+*.class
+
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Système
+.DS_Store
+Thumbs.db

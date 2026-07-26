@@ -1,0 +1,562 @@
+{
+  "info": {
+    "name": "Meetup API Tests",
+    "description": "Collection complète de tests pour tous les codes d'erreur et scénarios",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "noauth"
+  },
+  "item": [
+    {
+      "name": "Routes publiques (200/201)",
+      "item": [
+        {
+          "name": "GET / - Racine backend (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/"]
+            }
+          }
+        },
+        {
+          "name": "GET /api/events - Liste des événements (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/events",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/events"]
+            }
+          }
+        },
+        {
+          "name": "GET /api/events/1 - Détail événement (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/events/1",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/events/1"]
+            }
+          }
+        },
+        {
+          "name": "POST /api/auth/register - Inscription (201)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Amine\",\n  \"lastName\": \"Khaldi\",\n  \"email\": \"amine.khaldi.2026@example.com\",\n  \"password\": \"SecurePass123!\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/auth/register",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/auth/register"]
+            }
+          }
+        },
+        {
+          "name": "POST /api/auth/login - Connexion (200)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/auth/login",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/auth/login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": " Erreur 400 - Mauvaise requête",
+      "item": [
+        {
+          "name": "POST /api/auth/register - Email invalide (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Jean\",\n  \"lastName\": \"Dupont\",\n  \"email\": \"email-invalide\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/auth/register",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/auth/register"]
+            }
+          }
+        },
+        {
+          "name": "POST /api/auth/register - Email déjà utilisé (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Amine\",\n  \"lastName\": \"Khaldi\",\n  \"email\": \"amine.khaldi.2026@example.com\",\n  \"password\": \"SecurePass123!\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/auth/register",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/auth/register"]
+            }
+          }
+        },
+        {
+          "name": "POST /api/auth/login - Champs manquants (400)",
+          "request": {
+            "method": "POST",
+            "auth": {
+              "type": "noauth"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/auth/login",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/auth/login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": " Erreur 401 - Non authentifié",
+      "item": [
+        {
+          "name": "POST /api/events - Pas de token (401)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Mon événement\",\n  \"description\": \"Description\",\n  \"date\": \"2026-05-15T18:00:00\",\n  \"location\": \"Campus\",\n  \"city\": \"Lyon\",\n  \"imageUrl\": \"http://example.com/image.png\",\n  \"price\": 0,\n  \"maxParticipants\": 100,\n  \"category\": \"Tech\",\n  \"online\": false\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/events",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/events"]
+            }
+          }
+        },
+        {
+          "name": "POST /api/events - Token invalide (401)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer invalid-token-xyz"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Mon événement\",\n  \"description\": \"Description\",\n  \"date\": \"2026-05-15T18:00:00\",\n  \"location\": \"Campus\",\n  \"city\": \"Lyon\",\n  \"imageUrl\": \"http://example.com/image.png\",\n  \"price\": 0,\n  \"maxParticipants\": 100,\n  \"category\": \"Tech\",\n  \"online\": false\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/events",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/events"]
+            }
+          }
+        },
+        {
+          "name": "POST /api/events/{id}/register - Pas de token (401)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/events/1/register",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/events/1/register"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": " Erreur 403 - Interdit",
+      "item": [
+        {
+          "name": "PUT /api/events/1 - Pas propriétaire (403)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {token_autre_utilisateur}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Titre modifié\",\n  \"description\": \"Description\",\n  \"date\": \"2026-05-15T18:00:00\",\n  \"location\": \"Campus\",\n  \"city\": \"Lyon\",\n  \"imageUrl\": \"http://example.com/image.png\",\n  \"price\": 0,\n  \"maxParticipants\": 100,\n  \"category\": \"Tech\",\n  \"online\": false\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/events/1",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/events/1"]
+            }
+          }
+        },
+        {
+          "name": "DELETE /api/events/1 - Pas propriétaire (403)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {token_autre_utilisateur}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/events/1",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/events/1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Erreur 404 - Non trouvé",
+      "item": [
+        {
+          "name": "GET /api/events/9999 - ID inexistant (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/events/9999",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/events/9999"]
+            }
+          }
+        },
+        {
+          "name": "PUT /api/events/9999 - Événement inexistant (404)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {token}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Titre\",\n  \"description\": \"Description\",\n  \"date\": \"2026-05-15T18:00:00\",\n  \"location\": \"Campus\",\n  \"city\": \"Lyon\",\n  \"imageUrl\": \"http://example.com/image.png\",\n  \"price\": 0,\n  \"maxParticipants\": 100,\n  \"category\": \"Tech\",\n  \"online\": false\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/events/9999",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/events/9999"]
+            }
+          }
+        },
+        {
+          "name": "DELETE /api/events/9999 - Événement inexistant (404)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {token}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/events/9999",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/events/9999"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": " Erreur 405 - Méthode non autorisée",
+      "item": [
+        {
+          "name": "GET /api/auth/register - Method not allowed (405)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/auth/register",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/auth/register"]
+            }
+          }
+        },
+        {
+          "name": "GET /api/auth/login - Method not allowed (405)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/auth/login",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/auth/login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "CORS - Tests multi-origines",
+      "item": [
+        {
+          "name": "OPTIONS /api/events - Preflight CORS (200)",
+          "request": {
+            "method": "OPTIONS",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "http://localhost:5173"
+              },
+              {
+                "key": "Access-Control-Request-Method",
+                "value": "GET"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/events",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/events"]
+            }
+          }
+        },
+        {
+          "name": "OPTIONS /api/events - Preflight CORS localhost (200)",
+          "request": {
+            "method": "OPTIONS",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "http://localhost:5173"
+              },
+              {
+                "key": "Access-Control-Request-Method",
+                "value": "POST"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/events",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/events"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scénarios complets",
+      "item": [
+        {
+          "name": "1. Inscrire un utilisateur",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Nora\",\n  \"lastName\": \"Benali\",\n  \"email\": \"nora.benali.2026@example.com\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/auth/register",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/auth/register"]
+            }
+          }
+        },
+        {
+          "name": "2. Se connecter (récupère le token)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nora.benali.2026@example.com\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/auth/login",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/auth/login"]
+            }
+          }
+        },
+        {
+          "name": "3. Créer un événement (utilise le token du test 2)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {token_du_test_2}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Conférence Vue.js\",\n  \"description\": \"Une conférence sur les frameworks Vue.js\",\n  \"date\": \"2026-05-20T19:00:00\",\n  \"location\": \"Amphithéâtre\",\n  \"city\": \"Lyon\",\n  \"imageUrl\": \"http://example.com/event.png\",\n  \"price\": 10,\n  \"maxParticipants\": 50,\n  \"category\": \"Tech\",\n  \"online\": false\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/events",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/events"]
+            }
+          }
+        },
+        {
+          "name": "4. Récupérer l'événement créé",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/events/{event_id}",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/events/{event_id}"]
+            }
+          }
+        },
+        {
+          "name": "5. S'inscrire à l'événement",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {token_du_test_2}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/events/{event_id}/register",
+              "protocol": "http",
+              "host": ["192", "168", "75", "120"],
+              "port": "8080",
+              "path": ["/api/events/{event_id}/register"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
