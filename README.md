@@ -1,95 +1,63 @@
-Event Reservation Platform
+# Event Reservation Platform
 
 Application web full stack de création, de gestion et de réservation d’événements.
 
 Le projet associe une API REST sécurisée développée avec Spring Boot, une interface utilisateur Vue 3 et une base de données PostgreSQL. Il permet aux utilisateurs de créer un compte, publier des événements, s’y inscrire, se désinscrire et gérer leurs favoris.
 
-Fonctionnalités
+## Fonctionnalités
 
-Création de compte et authentification par JWT
+- Création de compte et authentification par JWT
+- Connexion et gestion du profil utilisateur
+- Consultation des événements à venir
+- Affichage du détail d’un événement
+- Création, modification et suppression d’événements
+- Inscription et désinscription à un événement
+- Consultation des participants
+- Ajout et retrait d’événements dans les favoris
+- Statistiques sur les événements
+- Documentation interactive de l’API avec Swagger UI
+- Collection Postman fournie pour tester les principaux scénarios
 
-Connexion et gestion du profil utilisateur
+## Technologies utilisées
 
-Consultation des événements à venir
+### Backend
 
-Affichage du détail d’un événement
+- Java 21
+- Spring Boot 4.0.5
+- Spring Web MVC
+- Spring Security
+- Spring Data JPA
+- Hibernate
+- PostgreSQL
+- JWT avec `jjwt` 0.11.5
+- SpringDoc OpenAPI / Swagger
+- Maven Wrapper
+- JUnit 5
+- Mockito
+- JaCoCo
 
-Création, modification et suppression d’événements
+### Frontend
 
-Inscription et désinscription à un événement
+- Vue 3.5
+- TypeScript 5.9
+- Vite 8
+- Vue Router
+- Pinia
+- Axios
+- Tailwind CSS
+- Lucide Vue Next
+- date-fns
 
-Consultation des participants
+### Infrastructure
 
-Ajout et retrait d’événements dans les favoris
+- Docker
+- Docker Compose
+- PostgreSQL 15 Alpine
+- GitHub Actions
 
-Statistiques sur les événements
+## Architecture
 
-Documentation interactive de l’API avec Swagger UI
-
-Collection Postman fournie pour tester les principaux scénarios
-
-Technologies utilisées
-
-Backend
-
-Java 21
-
-Spring Boot 4.0.5
-
-Spring Web MVC
-
-Spring Security
-
-Spring Data JPA
-
-Hibernate
-
-PostgreSQL
-
-JWT avec jjwt 0.11.5
-
-SpringDoc OpenAPI / Swagger
-
-Maven Wrapper
-
-JUnit 5
-
-Mockito
-
-JaCoCo
-
-Frontend
-
-Vue 3.5
-
-TypeScript 5.9
-
-Vite 8
-
-Vue Router
-
-Pinia
-
-Axios
-
-Tailwind CSS
-
-Lucide Vue Next
-
-date-fns
-
-Infrastructure
-
-Docker
-
-Docker Compose
-
-PostgreSQL 15 Alpine
-
-GitHub Actions
-
-Architecture
-
+```text
 event-reservation-platform/
 ├── backend/
 │   ├── src/
@@ -126,57 +94,65 @@ event-reservation-platform/
 ├── docker-compose.yml
 ├── postman_collection.json
 └── README.md
+```
 
-Prérequis
+## Prérequis
 
 Pour exécuter l’ensemble du projet :
 
-Git
-
-Docker
-
-Docker Compose
-
-Node.js 20 ou une version plus récente
-
-npm 10 ou une version plus récente
+- Git
+- Docker
+- Docker Compose
+- Node.js 20 ou une version plus récente
+- npm 10 ou une version plus récente
 
 Java et Maven ne sont pas obligatoires pour un lancement avec Docker. Ils sont nécessaires pour exécuter directement le backend hors conteneur.
 
 Vérification des outils :
 
+```bash
 git --version
 docker --version
 docker-compose --version
 node --version
 npm --version
 java -version
+```
 
 Selon l’installation de Docker, la commande disponible peut être :
 
+```bash
 docker-compose
+```
 
 ou :
 
+```bash
 docker compose
+```
 
-Les exemples suivants utilisent docker-compose.
+Les exemples suivants utilisent `docker-compose`.
 
-Installation
+## Installation
 
-1. Cloner le dépôt
+### 1. Cloner le dépôt
 
+```bash
 git clone git@github.com:miloud69009/event-reservation-platform.git
 cd event-reservation-platform
+```
 
-2. Préparer les variables d’environnement
+### 2. Préparer les variables d’environnement
 
 Copier le fichier d’exemple :
 
+```bash
 cp .env.example .env
+```
 
 Contenu attendu :
 
+```dotenv
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=change-me-local
 POSTGRES_DB=gp2m1
@@ -185,347 +161,273 @@ APP_JWT_SECRET=change-me-local-jwt-secret-at-least-32-characters
 APP_JWT_EXPIRATION_MS=86400000
 
 VITE_API_URL=http://localhost:8080/api
+```
 
-Le fichier .env est ignoré par Git et ne doit pas être publié.
+Le fichier `.env` est ignoré par Git et ne doit pas être publié.
 
 Pour une utilisation autre qu’une démonstration locale, remplacez le mot de passe PostgreSQL et la clé JWT par des valeurs robustes.
 
-Lancement avec Docker
+## Lancement avec Docker
 
-Le fichier docker-compose.yml démarre :
+Le fichier `docker-compose.yml` démarre :
 
-la base de données PostgreSQL ;
-
-l’API Spring Boot.
+- la base de données PostgreSQL ;
+- l’API Spring Boot.
 
 Le frontend Vue est lancé séparément avec npm.
 
-1. Démarrer PostgreSQL et le backend
+### 1. Démarrer PostgreSQL et le backend
 
 À la racine du projet :
 
+```bash
 docker-compose up --build -d
+```
 
 Vérifier l’état des conteneurs :
 
+```bash
 docker-compose ps
+```
 
 Afficher les logs du backend :
 
+```bash
 docker-compose logs -f api
+```
 
 Afficher les logs de PostgreSQL :
 
+```bash
 docker-compose logs -f db
+```
 
 Le backend communique avec PostgreSQL dans le réseau Docker sur :
 
+```text
 db:5432
+```
 
 Depuis l’ordinateur hôte, PostgreSQL est accessible sur :
 
+```text
 localhost:5433
+```
 
-2. Démarrer le frontend
+### 2. Démarrer le frontend
 
 Dans un autre terminal :
 
+```bash
 cd frontend
 npm ci
 npm run dev
+```
 
 L’URL de l’API utilisée par défaut est :
 
+```text
 http://localhost:8080/api
+```
 
-Pour la modifier localement, créer un fichier frontend/.env.local :
+Pour la modifier localement, créer un fichier `frontend/.env.local` :
 
+```dotenv
 VITE_API_URL=http://localhost:8080/api
+```
 
-3. Accéder à l’application
+### 3. Accéder à l’application
 
-Frontend : http://localhost:5173
+- Frontend : `http://localhost:5173`
+- Backend : `http://localhost:8080`
+- Swagger UI : `http://localhost:8080/swagger-ui/index.html`
+- Documentation OpenAPI : `http://localhost:8080/v3/api-docs`
+- PostgreSQL depuis l’hôte : `localhost:5433`
 
-Backend : http://localhost:8080
+### 4. Arrêter l’application
 
-Swagger UI : http://localhost:8080/swagger-ui/index.html
-
-Documentation OpenAPI : http://localhost:8080/v3/api-docs
-
-PostgreSQL depuis l’hôte : localhost:5433
-
-4. Arrêter l’application
-
+```bash
 docker-compose down
+```
 
 Pour supprimer également le volume PostgreSQL et recréer complètement la base au prochain démarrage :
 
+```bash
 docker-compose down -v
+```
 
 Attention : cette dernière commande supprime les données enregistrées dans la base Docker.
 
-Lancement sans Docker
+## Lancement sans Docker
 
-1. Préparer PostgreSQL
+### 1. Préparer PostgreSQL
 
-Créer une base nommée gp2m1, puis exécuter le script :
+Créer une base nommée `gp2m1`, puis exécuter le script :
 
+```bash
 psql -U postgres -c "CREATE DATABASE gp2m1;"
 psql -U postgres -d gp2m1 -f database/code.sql
+```
 
-2. Configurer les variables du backend
+### 2. Configurer les variables du backend
 
 Exemple :
 
+```bash
 export SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/gp2m1
 export SPRING_DATASOURCE_USERNAME=postgres
 export SPRING_DATASOURCE_PASSWORD=change-me-local
 export SPRING_JPA_HIBERNATE_DDL_AUTO=update
 export APP_JWT_SECRET=change-me-local-jwt-secret-at-least-32-characters
 export APP_JWT_EXPIRATION_MS=86400000
+```
 
-3. Lancer le backend
+### 3. Lancer le backend
 
+```bash
 cd backend
 chmod +x mvnw
 ./mvnw spring-boot:run
+```
 
-4. Lancer le frontend
+### 4. Lancer le frontend
 
 Dans un autre terminal :
 
+```bash
 cd frontend
 npm ci
 npm run dev
-
-Principaux endpoints de l’API
-
-Authentification
-
-Méthode
-
-Endpoint
-
-Description
-
-POST
-
-/api/auth/register
-
-Créer un compte
-
-POST
-
-/api/auth/login
-
-Se connecter
-
-Événements
-
-Méthode
-
-Endpoint
-
-Description
-
-GET
-
-/api/events
-
-Récupérer les événements
-
-GET
-
-/api/events/{id}
-
-Récupérer un événement
-
-GET
-
-/api/events/stats
-
-Récupérer les statistiques
-
-POST
-
-/api/events
-
-Créer un événement
-
-PUT
-
-/api/events/{id}
-
-Modifier un événement
-
-DELETE
-
-/api/events/{id}
-
-Supprimer un événement
-
-POST
-
-/api/events/{id}/register
-
-S’inscrire à un événement
-
-DELETE
-
-/api/events/{id}/register
-
-Se désinscrire
-
-POST
-
-/api/events/{id}/like
-
-Ajouter aux favoris
-
-DELETE
-
-/api/events/{id}/like
-
-Retirer des favoris
-
-GET
-
-/api/events/{id}/registrations
-
-Consulter les participants
-
-Utilisateur
-
-Méthode
-
-Endpoint
-
-Description
-
-GET
-
-/api/users/me
-
-Récupérer le profil connecté
-
-PUT
-
-/api/users/me
-
-Modifier le profil
-
-GET
-
-/api/users/me/registrations
-
-Consulter ses participations
-
-GET
-
-/api/users/me/likes
-
-Consulter ses favoris
-
-PUT
-
-/api/users/me/email
-
-Modifier son adresse électronique
-
-PUT
-
-/api/users/me/password
-
-Modifier son mot de passe
-
-DELETE
-
-/api/users/me
-
-Supprimer son compte
+```
+
+## Principaux endpoints de l’API
+
+### Authentification
+
+| Méthode | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/auth/register` | Créer un compte |
+| `POST` | `/api/auth/login` | Se connecter |
+
+### Événements
+
+| Méthode | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/events` | Récupérer les événements |
+| `GET` | `/api/events/{id}` | Récupérer un événement |
+| `GET` | `/api/events/stats` | Récupérer les statistiques |
+| `POST` | `/api/events` | Créer un événement |
+| `PUT` | `/api/events/{id}` | Modifier un événement |
+| `DELETE` | `/api/events/{id}` | Supprimer un événement |
+| `POST` | `/api/events/{id}/register` | S’inscrire à un événement |
+| `DELETE` | `/api/events/{id}/register` | Se désinscrire |
+| `POST` | `/api/events/{id}/like` | Ajouter aux favoris |
+| `DELETE` | `/api/events/{id}/like` | Retirer des favoris |
+| `GET` | `/api/events/{id}/registrations` | Consulter les participants |
+
+### Utilisateur
+
+| Méthode | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/users/me` | Récupérer le profil connecté |
+| `PUT` | `/api/users/me` | Modifier le profil |
+| `GET` | `/api/users/me/registrations` | Consulter ses participations |
+| `GET` | `/api/users/me/likes` | Consulter ses favoris |
+| `PUT` | `/api/users/me/email` | Modifier son adresse électronique |
+| `PUT` | `/api/users/me/password` | Modifier son mot de passe |
+| `DELETE` | `/api/users/me` | Supprimer son compte |
 
 Les endpoints privés nécessitent un jeton JWT envoyé dans l’en-tête :
 
+```http
 Authorization: Bearer <token>
+```
 
-Tests et qualité
+## Tests et qualité
 
-Backend
+### Backend
 
 Lancer tous les tests :
 
+```bash
 cd backend
 ./mvnw test
+```
 
 Résultat vérifié sur le projet :
 
-87 tests exécutés
-
-0 échec
-
-0 erreur
-
-build Maven réussi
+- 87 tests exécutés
+- 0 échec
+- 0 erreur
+- build Maven réussi
 
 Générer le rapport JaCoCo :
 
+```bash
 ./mvnw verify
+```
 
 Le rapport est généré dans :
 
+```text
 backend/target/site/jacoco/index.html
+```
 
-Frontend
+### Frontend
 
-Installer exactement les versions du fichier package-lock.json :
+Installer exactement les versions du fichier `package-lock.json` :
 
+```bash
 cd frontend
 npm ci
+```
 
 Vérifier le typage TypeScript et produire le build de production :
 
+```bash
 npm run build
+```
 
 Le projet ne contient pas encore de suite de tests automatisés pour le frontend. Le contrôle actuellement utilisé est le build Vue/TypeScript avec Vite.
 
 Le dossier produit est :
 
+```text
 frontend/dist/
+```
 
-Collection Postman
+## Collection Postman
 
 Le fichier suivant est fourni à la racine :
 
+```text
 postman_collection.json
+```
 
 Il peut être importé dans Postman pour tester les scénarios d’authentification, de gestion d’événements, d’inscription et de désinscription.
 
 L’URL de base locale est :
 
+```text
 http://localhost:8080
+```
 
-Sécurité
+## Sécurité
 
-Authentification sans session avec JWT
+- Authentification sans session avec JWT
+- Hachage des mots de passe avec BCrypt
+- Protection des endpoints privés avec Spring Security
+- Validation du jeton JWT sur les requêtes authentifiées
+- Configuration CORS limitée au frontend local
+- Secrets configurés par variables d’environnement
+- Fichier `.env` exclu du dépôt Git
+- Images Docker séparant la phase de compilation et l’exécution du backend
 
-Hachage des mots de passe avec BCrypt
+Les valeurs présentes dans `.env.example` sont uniquement destinées au développement local.
 
-Protection des endpoints privés avec Spring Security
+## Commandes utiles
 
-Validation du jeton JWT sur les requêtes authentifiées
-
-Configuration CORS limitée au frontend local
-
-Secrets configurés par variables d’environnement
-
-Fichier .env exclu du dépôt Git
-
-Images Docker séparant la phase de compilation et l’exécution du backend
-
-Les valeurs présentes dans .env.example sont uniquement destinées au développement local.
-
-Commandes utiles
-
+```bash
 # Démarrer le backend et PostgreSQL
 docker-compose up --build -d
 
@@ -560,35 +462,25 @@ npm run build
 
 # Prévisualiser le build
 npm run preview
+```
 
-État du projet
+## État du projet
 
 La version actuelle est fonctionnelle pour une démonstration locale et comprend :
 
-une API Spring Boot sécurisée ;
-
-une interface Vue 3 et TypeScript ;
-
-une base PostgreSQL initialisée avec des données de démonstration ;
-
-une configuration Docker Compose ;
-
-une documentation Swagger ;
-
-une collection Postman ;
-
-des tests automatisés backend ;
-
-un build frontend validé.
+- une API Spring Boot sécurisée ;
+- une interface Vue 3 et TypeScript ;
+- une base PostgreSQL initialisée avec des données de démonstration ;
+- une configuration Docker Compose ;
+- une documentation Swagger ;
+- une collection Postman ;
+- des tests automatisés backend ;
+- un build frontend validé.
 
 Améliorations possibles :
 
-ajout de tests automatisés frontend ;
-
-conteneurisation du frontend ;
-
-déploiement sur une plateforme publique ;
-
-gestion centralisée des secrets en production ;
-
-ajout d’une capture d’écran de l’application.
+- ajout de tests automatisés frontend ;
+- conteneurisation du frontend ;
+- déploiement sur une plateforme publique ;
+- gestion centralisée des secrets en production ;
+- ajout d’une capture d’écran de l’application.
