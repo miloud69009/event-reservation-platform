@@ -1,282 +1,594 @@
-# Event Reservation Platform
+Event Reservation Platform
 
-Application web full stack pour la gestion et le suivi d'événements (Meetup), avec un backend API sécurisé et une interface utilisateur moderne et réactive.
+Application web full stack de création, de gestion et de réservation d’événements.
 
-## Table des Matières
+Le projet associe une API REST sécurisée développée avec Spring Boot, une interface utilisateur Vue 3 et une base de données PostgreSQL. Il permet aux utilisateurs de créer un compte, publier des événements, s’y inscrire, se désinscrire et gérer leurs favoris.
 
-- [Dépendances](#dépendances)
-- [Architecture](#architecture)
-- [Build et Installation](#build-et-installation)
-- [Lancement](#lancement)
-- [VM de Démonstration](#vm-de-démonstration)
-- [Configuration](#configuration)
-- [Tests](#tests)
+Fonctionnalités
 
-## Dépendances
+Création de compte et authentification par JWT
 
-### Backend
+Connexion et gestion du profil utilisateur
 
-**Java 21** avec Apache Maven 3.8+
+Consultation des événements à venir
 
-Dépendances Maven principales (voir `backend/pom.xml`):
+Affichage du détail d’un événement
 
-- **Spring Boot 4.0.5**: framework web sécurisé
-- **Spring Security**: authentification et authorization
-- **Spring Data JPA**: persistance avec Hibernate
-- **PostgreSQL Driver**: accès à la base de données
-- **JWT (jjwt 0.11.5)**: tokens JWT pour l'authentification
-- **Lombok**: génération de code (getters, setters, etc.)
-- **SpringDoc OpenAPI**: documentation Swagger UI
-- **JaCoCo**: couverture de tests (rapports de qualité)
-- **JUnit 5**: tests unitaires
-- **Mockito**: mocking pour les tests
+Création, modification et suppression d’événements
 
-### Frontend
+Inscription et désinscription à un événement
 
-**Node.js 20+** et **npm 10+**
+Consultation des participants
 
-Dépendances npm principales (voir `frontend/package.json`):
+Ajout et retrait d’événements dans les favoris
 
-- **Vue 3.5.30**: framework frontend réactif
-- **TypeScript 5.9**: typage statique
-- **Vite 8.0.1**: bundler et dev server ultra-rapide
-- **Vue Router 4.6.4**: routage côté client
-- **Pinia 3.0.4**: gestion d'état centralisée
-- **Axios 1.13.6**: client HTTP
-- **Tailwind CSS 3.4.19**: framework CSS utilitaire
-- **Lucide Vue Next 1.0.0**: icônes SVG
-- **date-fns 4.1.0**: manipulation de dates
+Statistiques sur les événements
 
-### Base de Données
+Documentation interactive de l’API avec Swagger UI
 
-- **PostgreSQL 15+** (ou PostgreSQL 15-alpine si Docker)
+Collection Postman fournie pour tester les principaux scénarios
 
-##  Architecture
+Technologies utilisées
 
-```
-gp2m1/
-├── backend/                    # API Spring Boot
+Backend
+
+Java 21
+
+Spring Boot 4.0.5
+
+Spring Web MVC
+
+Spring Security
+
+Spring Data JPA
+
+Hibernate
+
+PostgreSQL
+
+JWT avec jjwt 0.11.5
+
+SpringDoc OpenAPI / Swagger
+
+Maven Wrapper
+
+JUnit 5
+
+Mockito
+
+JaCoCo
+
+Frontend
+
+Vue 3.5
+
+TypeScript 5.9
+
+Vite 8
+
+Vue Router
+
+Pinia
+
+Axios
+
+Tailwind CSS
+
+Lucide Vue Next
+
+date-fns
+
+Infrastructure
+
+Docker
+
+Docker Compose
+
+PostgreSQL 15 Alpine
+
+GitHub Actions
+
+Architecture
+
+event-reservation-platform/
+├── backend/
 │   ├── src/
-│   │   ├── main/java/          # Code source (controllers, services, models, etc.)
-│   │   └── test/java/          # Tests JUnit + Mockito
-│   ├── pom.xml                 # Dépendances Maven
-│   └── mvnw / mvnw.cmd         # Maven Wrapper (sans installation Maven requise)
-├── frontend/                   # Application Vue 3
-│   ├── src/
-│   │   ├── components/         # Composants réutilisables
-│   │   ├── views/              # Pages (Home, Event Details, etc.)
-│   │   ├── services/           # Appels API
-│   │   ├── stores/             # Gestion Pinia
-│   │   └── router/             # Configuration Vue Router
-│   ├── package.json            # Dépendances npm
-│   └── vite.config.ts          # Configuration Vite
+│   │   ├── main/
+│   │   │   ├── java/com/e11even/backend/
+│   │   │   │   ├── config/
+│   │   │   │   ├── controllers/
+│   │   │   │   ├── dto/
+│   │   │   │   ├── models/
+│   │   │   │   ├── repositories/
+│   │   │   │   ├── security/
+│   │   │   │   └── services/
+│   │   │   └── resources/
+│   │   └── test/
+│   ├── Dockerfile
+│   ├── pom.xml
+│   └── mvnw
 ├── database/
-│   └── code.sql                # Script d'initialisation PostgreSQL
-├── docker-compose.yml          # Orchestration conteneurs (backend + db)
-├── postman_collection.json     # Collection de tests API
-└── README.md                   # Cette documentation
-```
+│   └── code.sql
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── router/
+│   │   ├── services/
+│   │   ├── stores/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   └── views/
+│   ├── package.json
+│   └── vite.config.ts
+├── .env.example
+├── .gitignore
+├── docker-compose.yml
+├── postman_collection.json
+└── README.md
 
-## Build et Installation
+Prérequis
 
-### 1. Prérequis
+Pour exécuter l’ensemble du projet :
 
-Installer localement:
+Git
 
-```bash
-# Java 21
-java -version
-# Output: openjdk version "21.x.x"
+Docker
 
-# Node.js 20+
-node --version npm --version
-# Output: v20.x.x, 10.x.x
+Docker Compose
 
-# Docker + Docker Compose (recommandé)
+Node.js 20 ou une version plus récente
+
+npm 10 ou une version plus récente
+
+Java et Maven ne sont pas obligatoires pour un lancement avec Docker. Ils sont nécessaires pour exécuter directement le backend hors conteneur.
+
+Vérification des outils :
+
+git --version
 docker --version
-docker compose version
-```
+docker-compose --version
+node --version
+npm --version
+java -version
 
-### 2. Cloner le projet
+Selon l’installation de Docker, la commande disponible peut être :
 
-```bash
-git clone <repository-url>
+docker-compose
+
+ou :
+
+docker compose
+
+Les exemples suivants utilisent docker-compose.
+
+Installation
+
+1. Cloner le dépôt
+
+git clone git@github.com:miloud69009/event-reservation-platform.git
 cd event-reservation-platform
-```
 
-### 3. Build Backend
+2. Préparer les variables d’environnement
 
-Le backend utilise Maven Wrapper (aucune installation Maven requise).
+Copier le fichier d’exemple :
 
-```bash
-cd backend
+cp .env.example .env
 
-# Compiler et packer
-./mvnw clean package
+Contenu attendu :
 
-# Ou juste compiler (sans packaging)
-./mvnw clean compile
-```
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=change-me-local
+POSTGRES_DB=gp2m1
 
-**Artifacts générés:**
-- `backend/target/backend-0.0.1-SNAPSHOT.jar` (JAR exécutable)
-- `backend/target/site/jacoco/` (rapport couverture de tests)
-- `backend/target/surefire-reports/` (résultats tests)
+APP_JWT_SECRET=change-me-local-jwt-secret-at-least-32-characters
+APP_JWT_EXPIRATION_MS=86400000
 
-### 4. Build Frontend
-
-```bash
-cd frontend
-
-# Installer les dépendances
-npm install
-
-# Compiler et minifier
-npm run build
-```
-
-**Artifacts générés:**
-- `frontend/dist/` (dossier prêt pour production)
-
-## Lancement
-
-### Option 1: Docker Compose (Recommandé)
-
-Lance l'API + PostgreSQL dans des conteneurs:
-
-```bash
-cd event-reservation-platform
-docker compose up --build -d
-
-# Vérifier l'état
-docker compose ps
-
-# Voir les logs
-docker compose logs -f api
-docker compose logs -f db
-```
-
-### Option 2: Local (sans Docker)
-
-1. **Démarrer PostgreSQL** (local ou sur VM)
-
-```bash
-# Local: installer PostgreSQL et créer la base
-psql -U postgres
-CREATE DATABASE gp2m1;
-\q
-```
-
-2. **Configurer le backend** (vérifier `backend/src/main/resources/application.properties`)
-
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/gp2m1
-spring.datasource.username=postgres
-spring.datasource.password=${SPRING_DATASOURCE_PASSWORD}
-spring.jpa.hibernate.ddl-auto=update
-```
-
-3. **Lancer l'API**
-
-```bash
-cd backend
-./mvnw spring-boot:run
-# L'API démarre sur http://localhost:8080
-```
-
-4. **Lancer le frontend** (dans un autre terminal)
-
-```bash
-cd frontend
-npm run dev
-# Le frontend démarre sur http://localhost:5173
-```
-
-## Configuration
-
-### Variables d'environnement
-
-#### Backend
-
-```bash
-SPRING_DATASOURCE_URL=jdbc:postgresql://host:5432/gp2m1
-SPRING_DATASOURCE_USERNAME=postgres
-SPRING_DATASOURCE_PASSWORD=change-me-local
-SPRING_JPA_HIBERNATE_DDL_AUTO=update
-```
-
-#### Frontend
-
-```bash
 VITE_API_URL=http://localhost:8080/api
-```
 
-### Fichiers de configuration
+Le fichier .env est ignoré par Git et ne doit pas être publié.
 
-- **Backend:** `backend/src/main/resources/application.properties`
-- **Frontend:** `frontend/vite.config.ts`, `frontend/tsconfig.json`
-- **Docker:** `docker-compose.yml`
+Pour une utilisation autre qu’une démonstration locale, remplacez le mot de passe PostgreSQL et la clé JWT par des valeurs robustes.
 
-## Tests
+Lancement avec Docker
 
-### Tests Backend (JUnit + Mockito)
+Le fichier docker-compose.yml démarre :
 
-```bash
+la base de données PostgreSQL ;
+
+l’API Spring Boot.
+
+Le frontend Vue est lancé séparément avec npm.
+
+1. Démarrer PostgreSQL et le backend
+
+À la racine du projet :
+
+docker-compose up --build -d
+
+Vérifier l’état des conteneurs :
+
+docker-compose ps
+
+Afficher les logs du backend :
+
+docker-compose logs -f api
+
+Afficher les logs de PostgreSQL :
+
+docker-compose logs -f db
+
+Le backend communique avec PostgreSQL dans le réseau Docker sur :
+
+db:5432
+
+Depuis l’ordinateur hôte, PostgreSQL est accessible sur :
+
+localhost:5433
+
+2. Démarrer le frontend
+
+Dans un autre terminal :
+
+cd frontend
+npm ci
+npm run dev
+
+L’URL de l’API utilisée par défaut est :
+
+http://localhost:8080/api
+
+Pour la modifier localement, créer un fichier frontend/.env.local :
+
+VITE_API_URL=http://localhost:8080/api
+
+3. Accéder à l’application
+
+Frontend : http://localhost:5173
+
+Backend : http://localhost:8080
+
+Swagger UI : http://localhost:8080/swagger-ui/index.html
+
+Documentation OpenAPI : http://localhost:8080/v3/api-docs
+
+PostgreSQL depuis l’hôte : localhost:5433
+
+4. Arrêter l’application
+
+docker-compose down
+
+Pour supprimer également le volume PostgreSQL et recréer complètement la base au prochain démarrage :
+
+docker-compose down -v
+
+Attention : cette dernière commande supprime les données enregistrées dans la base Docker.
+
+Lancement sans Docker
+
+1. Préparer PostgreSQL
+
+Créer une base nommée gp2m1, puis exécuter le script :
+
+psql -U postgres -c "CREATE DATABASE gp2m1;"
+psql -U postgres -d gp2m1 -f database/code.sql
+
+2. Configurer les variables du backend
+
+Exemple :
+
+export SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/gp2m1
+export SPRING_DATASOURCE_USERNAME=postgres
+export SPRING_DATASOURCE_PASSWORD=change-me-local
+export SPRING_JPA_HIBERNATE_DDL_AUTO=update
+export APP_JWT_SECRET=change-me-local-jwt-secret-at-least-32-characters
+export APP_JWT_EXPIRATION_MS=86400000
+
+3. Lancer le backend
+
 cd backend
+chmod +x mvnw
+./mvnw spring-boot:run
 
-# Lancer tous les tests
+4. Lancer le frontend
+
+Dans un autre terminal :
+
+cd frontend
+npm ci
+npm run dev
+
+Principaux endpoints de l’API
+
+Authentification
+
+Méthode
+
+Endpoint
+
+Description
+
+POST
+
+/api/auth/register
+
+Créer un compte
+
+POST
+
+/api/auth/login
+
+Se connecter
+
+Événements
+
+Méthode
+
+Endpoint
+
+Description
+
+GET
+
+/api/events
+
+Récupérer les événements
+
+GET
+
+/api/events/{id}
+
+Récupérer un événement
+
+GET
+
+/api/events/stats
+
+Récupérer les statistiques
+
+POST
+
+/api/events
+
+Créer un événement
+
+PUT
+
+/api/events/{id}
+
+Modifier un événement
+
+DELETE
+
+/api/events/{id}
+
+Supprimer un événement
+
+POST
+
+/api/events/{id}/register
+
+S’inscrire à un événement
+
+DELETE
+
+/api/events/{id}/register
+
+Se désinscrire
+
+POST
+
+/api/events/{id}/like
+
+Ajouter aux favoris
+
+DELETE
+
+/api/events/{id}/like
+
+Retirer des favoris
+
+GET
+
+/api/events/{id}/registrations
+
+Consulter les participants
+
+Utilisateur
+
+Méthode
+
+Endpoint
+
+Description
+
+GET
+
+/api/users/me
+
+Récupérer le profil connecté
+
+PUT
+
+/api/users/me
+
+Modifier le profil
+
+GET
+
+/api/users/me/registrations
+
+Consulter ses participations
+
+GET
+
+/api/users/me/likes
+
+Consulter ses favoris
+
+PUT
+
+/api/users/me/email
+
+Modifier son adresse électronique
+
+PUT
+
+/api/users/me/password
+
+Modifier son mot de passe
+
+DELETE
+
+/api/users/me
+
+Supprimer son compte
+
+Les endpoints privés nécessitent un jeton JWT envoyé dans l’en-tête :
+
+Authorization: Bearer <token>
+
+Tests et qualité
+
+Backend
+
+Lancer tous les tests :
+
+cd backend
 ./mvnw test
 
-# Lancer un test spécifique
-./mvnw test -Dtest=EventControllerTest
+Résultat vérifié sur le projet :
 
-# Générer rapport de couverture JaCoCo
+87 tests exécutés
+
+0 échec
+
+0 erreur
+
+build Maven réussi
+
+Générer le rapport JaCoCo :
+
 ./mvnw verify
-```
 
-**Couverture attendue:** rapport dans `backend/target/site/jacoco/index.html`
+Le rapport est généré dans :
 
-### Tests Frontend
+backend/target/site/jacoco/index.html
 
-```bash
+Frontend
+
+Installer exactement les versions du fichier package-lock.json :
+
 cd frontend
+npm ci
 
-# Tests (non configurés actuellement, mais infrastructure Vite en place)
-npm run test
-```
+Vérifier le typage TypeScript et produire le build de production :
 
-## Authentification
+npm run build
 
-- Tokens JWT générés lors du login
-- Stockés en `localStorage` côté frontend
-- Envoyés dans l'en-tête `Authorization: Bearer <token>` pour les endpoints privés
+Le projet ne contient pas encore de suite de tests automatisés pour le frontend. Le contrôle actuellement utilisé est le build Vue/TypeScript avec Vite.
 
-## Postman Collection
+Le dossier produit est :
 
-Une collection Postman est fournie: `postman_collection.json`
+frontend/dist/
 
-- Importe-la dans Postman
-- Teste les endpoints et scénarios complets
+Collection Postman
 
-## Commandes Utiles
+Le fichier suivant est fourni à la racine :
 
-```bash
-# Backend
+postman_collection.json
+
+Il peut être importé dans Postman pour tester les scénarios d’authentification, de gestion d’événements, d’inscription et de désinscription.
+
+L’URL de base locale est :
+
+http://localhost:8080
+
+Sécurité
+
+Authentification sans session avec JWT
+
+Hachage des mots de passe avec BCrypt
+
+Protection des endpoints privés avec Spring Security
+
+Validation du jeton JWT sur les requêtes authentifiées
+
+Configuration CORS limitée au frontend local
+
+Secrets configurés par variables d’environnement
+
+Fichier .env exclu du dépôt Git
+
+Images Docker séparant la phase de compilation et l’exécution du backend
+
+Les valeurs présentes dans .env.example sont uniquement destinées au développement local.
+
+Commandes utiles
+
+# Démarrer le backend et PostgreSQL
+docker-compose up --build -d
+
+# Vérifier les conteneurs
+docker-compose ps
+
+# Suivre les logs
+docker-compose logs -f
+
+# Arrêter les conteneurs
+docker-compose down
+
+# Tests backend
 cd backend
-./mvnw clean compile          # Compiler
-./mvnw test                   # Tests
-./mvnw spring-boot:run        # Lancer l'API
-./mvnw verify                 # Tests + rapports
+./mvnw test
 
-# Frontend
-cd frontend
-npm install                   # Installer dépendances
-npm run dev                   # Dev server
-npm run build                 # Production build
-npm run preview               # Préview du build
+# Build backend
+./mvnw clean package
 
-# Docker
-docker compose up --build -d  # Démarrer avec rebuild
-docker compose down           # Arrêter
-docker compose logs -f        # Voir les logs
-```
+# Lancer le backend sans Docker
+./mvnw spring-boot:run
+
+# Installer le frontend
+cd ../frontend
+npm ci
+
+# Lancer le frontend
+npm run dev
+
+# Build frontend
+npm run build
+
+# Prévisualiser le build
+npm run preview
+
+État du projet
+
+La version actuelle est fonctionnelle pour une démonstration locale et comprend :
+
+une API Spring Boot sécurisée ;
+
+une interface Vue 3 et TypeScript ;
+
+une base PostgreSQL initialisée avec des données de démonstration ;
+
+une configuration Docker Compose ;
+
+une documentation Swagger ;
+
+une collection Postman ;
+
+des tests automatisés backend ;
+
+un build frontend validé.
+
+Améliorations possibles :
+
+ajout de tests automatisés frontend ;
+
+conteneurisation du frontend ;
+
+déploiement sur une plateforme publique ;
+
+gestion centralisée des secrets en production ;
+
+ajout d’une capture d’écran de l’application.
